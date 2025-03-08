@@ -7,7 +7,7 @@ const cards = [
   { title: "Registered Users", count: 120, link: "/register-table" },
   { title: "Logged-in Users", count: 85, link: "/logedin" },
   { title: "Job Registrations", count: 40, link: "/EmployeeList" },
-  { title: "Attendances", count: 320, link: "/attendances" },
+  { title: "Attendances", count: 320, link: "/attendences" },
   { title: "Shifts", count: 25, link: "/shifts" },
   { title: "ApprovedShifts", count: 25, link: "/Approvedshifts" },
   { title: "RejectedShifts", count: 25, link: "/Rejectededshifts" },

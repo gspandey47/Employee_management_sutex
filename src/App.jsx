@@ -252,6 +252,8 @@ import Admindesplay_public_notice from "./Components/Page/DesplayPublicNotice";
 import SendEmployeeNotice from "./Components/Page/sendEmployeeNotice";
 import DesplayEmployeeNotice from "./Components/Page/DesplayEmployeeNotice";
 import Notices from "./Components/Page/FetchallNotice_employee";
+import DisplayAttendences from "./Components/Page/DesplayAttendences";
+import DisplayEmployeeAttendance from "./Components/Page/Employee_attendence";
 
 function App() {
   return (
@@ -267,6 +269,7 @@ function App() {
         <Route path="/admin" element={<Admin/>} />
         <Route path="/register-table" element={<RegisterTable />} />
         <Route path="/EmployeeList" element={<EmployeeList />} />
+        <Route path="/attendences" element={<DisplayAttendences/>} />
                   <Route path="/logedin" element={<LogedinTable />} />
                   <Route path="/approve" element={<Approved />} />
                   <Route path="/Approvedshifts" element={<Approved_shift />} />
@@ -325,6 +328,7 @@ function App() {
                   <Route path="/Att_dtl" element={<><Navbar /><Att_detail /></>} />
                   <Route path="/shift" element={<><Navbar /><Shift /></>} />
                   <Route path="/shiftlogin_emp" element={<><Navbar /><EmployeeLogin /></>} />
+                  <Route path="/display_employee_attendence" element={<><Navbar /><DisplayEmployeeAttendance/></>} />
                   <Route path="/leavelogin_emp" element={<><Navbar /><EmployeeleaveLogin /></>} />
                   <Route path="/view" element={<><Navbar /><View /></>} />
                   <Route path="/Register" element={<><Navbar /><Register /></>} />

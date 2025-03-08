@@ -143,12 +143,12 @@ function Navbar() {
 
               <li className="text-sm">
                 <NavLink
-                  to="/Att_dtl"
+                  to="/display_employee_attendence"
                   className={({ isActive }) => (isActive ? "Active" : "")}
                 >
                   <div className="flex items-center">
                      <FaUser className="inline-block mr-2 text-lg" />
-                     <span>Att_Dtl</span>
+                     <span>Records</span>
                    </div>
                 </NavLink>
               </li>
