@@ -17,7 +17,7 @@ function Header() {
     <div className='flex justify-between items-center h-12 w-full rounded-t-sm border border-purple-800 bg-purple-900 px-4'>  
       {/* Logo and Title */}
       <a href="/" className='flex items-center gap-2'>
-        <img src="./src/assets/pet.jpeg" alt="Logo" className='h-[40px] w-[40px] rounded-full'/>
+        <img src="./src/assets/emp1.jpg" alt="Logo" className='h-[40px] w-[40px] rounded-full'/>
         <span className='text-white font-semibold text-lg'>EMPLOYEE MANAGEMENT SYSTEM</span>
       </a>
 

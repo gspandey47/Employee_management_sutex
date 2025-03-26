@@ -1,9 +1,9 @@
 
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 const Job = () => {
   const [image, setImage] = useState(null);
   const [resume, setResume] = useState(null);
@@ -11,11 +11,9 @@ const Job = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-
   const {
     register,
     handleSubmit,
-    watch,
     trigger,
     formState: { errors },
   } = useForm();
@@ -30,7 +28,7 @@ const Job = () => {
     if (resume) formData.append("resume", resume);
 
     try {
-      const response = await axios.post("http://localhost/my-backend/job_register.php", formData, {
+      const response = await axios.post("http://localhost/my-backend/jobregister.php", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       console.log("Form Submitted Successfully!", data);
@@ -43,22 +41,17 @@ const Job = () => {
     setLoading(false);
   };
 
-  const password = watch("password");
-
   const validateStep = async (step) => {
     let fields = [];
     switch (step) {
       case 1:
-        fields = ["name", "email", "mobile", "date"];
+        fields = ["name", "email", "mobile", "applicationDate"];
         break;
       case 2:
         fields = ["age", "gender", "adhaar", "pan"];
         break;
       case 3:
         fields = ["account", "dob", "address", "city", "nominee"];
-        break;
-      case 4:
-        fields = ["password", "confirmPassword"];
         break;
       default:
         break;
@@ -76,6 +69,21 @@ const Job = () => {
 
   const handlePrevious = () => {
     setStep(step - 1);
+  };
+
+  // Date validation functions
+  const validateApplicationDate = (date) => {
+    const selectedDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return selectedDate >= today || "Application date cannot be in the past";
+  };
+
+  const validateDOB = (date) => {
+    const selectedDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return selectedDate <= today || "Date of birth cannot be in the future";
   };
 
   return (
@@ -136,15 +144,18 @@ const Job = () => {
               {errors.mobile && <span className="text-red-500 text-sm">{errors.mobile.message}</span>}
             </div>
 
-            {/* Date */}
+            {/* Application Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Date:</label>
+              <label className="block text-sm font-medium text-gray-700">Application Date:</label>
               <input
                 type="date"
-                {...register("Date", { required: "Date is required" })}
+                {...register("applicationDate", { 
+                  required: "Application date is required",
+                  validate: validateApplicationDate
+                })}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
-              {errors.Date && <span className="text-red-500 text-sm">{errors.Date.message}</span>}
+              {errors.applicationDate && <span className="text-red-500 text-sm">{errors.applicationDate.message}</span>}
             </div>
 
             {/* Next Button */}
@@ -196,7 +207,7 @@ const Job = () => {
             <div>
               <label className="block text-sm font-medium text-gray-700">Adhaar:</label>
               <input
-                {...register("Adhaar", {
+                {...register("adhaar", {
                   required: "Adhaar number is required",
                   pattern: {
                     value: /^[0-9]{12}$/,
@@ -206,7 +217,7 @@ const Job = () => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your Adhaar number"
               />
-              {errors.Adhaar && <span className="text-red-500 text-sm">{errors.Adhaar.message}</span>}
+              {errors.adhaar && <span className="text-red-500 text-sm">{errors.adhaar.message}</span>}
             </div>
 
             {/* PAN */}
@@ -267,13 +278,16 @@ const Job = () => {
 
             {/* DOB */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">DOB:</label>
+              <label className="block text-sm font-medium text-gray-700">Date of Birth:</label>
               <input
                 type="date"
-                {...register("Date", { required: "Date of Birth is required" })}
+                {...register("dob", { 
+                  required: "Date of Birth is required",
+                  validate: validateDOB
+                })}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
-              {errors.Date && <span className="text-red-500 text-sm">{errors.Date.message}</span>}
+              {errors.dob && <span className="text-red-500 text-sm">{errors.dob.message}</span>}
             </div>
 
             {/* Address */}
@@ -314,7 +328,7 @@ const Job = () => {
             <div>
               <label className="block text-sm font-medium text-gray-700">Nominee:</label>
               <input
-                {...register("Nominee", {
+                {...register("nominee", {
                   required: "Nominee is required",
                   pattern: {
                     value: /^[A-Za-z\s]+$/,
@@ -324,66 +338,7 @@ const Job = () => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter nominee name"
               />
-              {errors.Nominee && <span className="text-red-500 text-sm">{errors.Nominee.message}</span>}
-            </div>
-
-            {/* Previous and Next Buttons */}
-            <div className="flex justify-between">
-              <button
-                type="button"
-                onClick={handlePrevious}
-                className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
-              >
-                Previous
-              </button>
-              <button
-                type="button"
-                onClick={handleNext}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        )}
-
-        {step === 4 && (
-          <div className="space-y-4">
-            {/* Password */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Password:</label>
-              <input
-                type="password"
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 8,
-                    message: "Password must be at least 8 characters",
-                  },
-                  pattern: {
-                    value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                    message: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
-                  },
-                })}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter password"
-              />
-              {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
-            </div>
-
-            {/* Confirm Password */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Confirm Password:</label>
-              <input
-                type="password"
-                {...register("confirmPassword", {
-                  required: "Please confirm your password",
-                  validate: (value) => value === password || "Passwords do not match",
-                })}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Confirm password"
-              />
-              {errors.confirmPassword && <span className="text-red-500 text-sm">{errors.confirmPassword.message}</span>}
+              {errors.nominee && <span className="text-red-500 text-sm">{errors.nominee.message}</span>}
             </div>
 
             {/* Upload Image */}
@@ -420,7 +375,6 @@ const Job = () => {
               <button
                 type="submit"
                 disabled={loading}
-                onSubmit={'Navigate'}
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {loading ? "Submitting..." : "Submit"}
@@ -442,143 +396,24 @@ export default Job;
 
 
 
+
 // import React, { useState } from "react";
 // import { useForm } from "react-hook-form";
 // import axios from "axios";
-
+// import { useNavigate } from "react-router-dom";
 // const Job = () => {
 //   const [image, setImage] = useState(null);
 //   const [resume, setResume] = useState(null);
 //   const [step, setStep] = useState(1);
 //   const [loading, setLoading] = useState(false);
+//   const navigate = useNavigate();
 
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm();
-
-//   const onSubmit = async (data) => {
-//     setLoading(true);
-//     const formData = new FormData();
-//     Object.keys(data).forEach((key) => {
-//       formData.append(key, data[key]);
-//     });
-//     if (image) formData.append("image", image);
-//     if (resume) formData.append("resume", resume);
-
-//     try {
-//       const response = await axios.post("http://localhost/my-backend/job_register.php", formData, {
-//         headers: { "Content-Type": "multipart/form-data" },
-//       });
-//       console.log("Form Submitted Successfully!", data);
-//       alert(response.data.message || response.data.error);
-//     } catch (error) {
-//       console.error("Error:", error);
-//       alert("An error occurred while submitting the form.");
-//     }
-//     setLoading(false);
-//   };
-
-//   return (
-//     <div className="w-full max-w-lg mx-auto  px-8 py-10 rounded-lg shadow-lg text-black">
-//       <h2 className="text-3xl font-bold text-center mb-6">Job Registration Form</h2>
-//       {loading && <div className="text-center text-yellow-300 font-bold">Submitting...</div>}
-//       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-//         {step === 1 && (
-//           <div className="px-4 space-y-4">
-//             <label className="block">Name:</label>
-//             <input {...register("name", { required: true })} className="input-field" placeholder="Enter your name" />
-//             <label className="block">Email:</label>
-//             <input {...register("email", { required: true })} className="input-field" placeholder="Enter your email" />
-//             <label className="block">Mobile:</label>
-//             <input {...register("mobile", { required: true })} className="input-field" placeholder="Enter your mobile number" />
-//             <label className="block">Date:</label>
-//             <input type="date" {...register("Date", { required: true })} className="input-field" />
-//             <div className="flex justify-between">
-//               <button type="button" onClick={() => setStep(step + 1)} className="btn-next">Next</button>
-//             </div>
-//           </div>
-//         )}
-
-//         {step === 2 && (
-//           <div className="px-4 space-y-4">
-//             <label className="block">Age:</label>
-//             <input type="number" {...register("age", { required: true })} className="input-field" placeholder="Enter your age" />
-//             <label className="block">Gender:</label>
-//             <select {...register("gender", { required: true })} className="input-field">
-//               <option value="">Select Gender</option>
-//               <option value="Male">Male</option>
-//               <option value="Female">Female</option>
-//             </select>
-//             <label className="block">Adhaar:</label>
-//             <input {...register("Adhaar", { required: true })} className="input-field" placeholder="Enter your Adhaar number" />
-//             <label className="block">PAN:</label>
-//             <input {...register("pan", { required: true })} className="input-field" placeholder="Enter your PAN number" />
-//             <div className="flex justify-between">
-//               <button type="button" onClick={() => setStep(step - 1)} className="btn-prev">Previous</button>
-//               <button type="button" onClick={() => setStep(step + 1)} className="btn-next">Next</button>
-//             </div>
-//           </div>
-//         )}
-
-//         {step === 3 && (
-//           <div className=" px-4 space-y-4">
-//             <label className="block">Account No:</label>
-//             <input {...register("account", { required: true })} className="input-field" placeholder="Enter your Account Number" />
-//             <label className="block">DOB:</label>
-//             <input type="date" {...register("dob", { required: true })} className="input-field" />
-//             <label className="block">Address:</label>
-//             <input {...register("address", { required: true })} className="input-field" placeholder="Enter your address" />
-//             <label className="block">City:</label>
-//             <input {...register("city", { required: true })} className="input-field" placeholder="Enter your city" />
-//             <label className="block">Nominee:</label>
-//             <input {...register("Nominee", { required: true })} className="input-field" placeholder="Enter nominee name" />
-//             <div className="flex justify-between">
-//               <button type="button" onClick={() => setStep(step - 1)} className="btn-prev">Previous</button>
-//               <button type="button" onClick={() => setStep(step + 1)} className="btn-next">Next</button>
-//             </div>
-//           </div>
-//         )}
-
-//         {step === 4 && (
-//           <div className=" px-4 space-y-4">
-//             <label className="block">Password:</label>
-//             <input type="password" {...register("password", { required: true })} className="input-field" placeholder="Enter password" />
-//             <label className="block">Confirm Password:</label>
-//             <input type="password" {...register("confirmPassword", { required: true })} className="input-field" placeholder="Confirm password" />
-//             <label className="block">Upload Image:</label>
-//             <input type="file" accept="image/jpeg, image/png" onChange={(e) => setImage(e.target.files[0])} className="input-field" />
-//             <label className="block">Upload Resume:</label>
-//             <input type="file" accept=".pdf, .doc, .docx" onChange={(e) => setResume(e.target.files[0])} className="input-field" />
-//             <div className="flex justify-between">
-//               <button type="button" onClick={() => setStep(step - 1)} className="btn-prev">Previous</button>
-//               <button type="submit" disabled={loading} className="btn-submit bg-blue-800">{loading ? "Submitting..." : "Submit"}</button>
-//             </div>
-//           </div>
-//         )}
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default Job;
-
-
-// import React, { useState } from "react";
-// import { useForm } from "react-hook-form";
-// import axios from "axios";
-
-// const Job = () => {
-//   const [image, setImage] = useState(null);
-//   const [resume, setResume] = useState(null);
-//   const [step, setStep] = useState(1);
-//   const [loading, setLoading] = useState(false);
 
 //   const {
 //     register,
 //     handleSubmit,
 //     watch,
+//     trigger,
 //     formState: { errors },
 //   } = useForm();
 
@@ -597,6 +432,7 @@ export default Job;
 //       });
 //       console.log("Form Submitted Successfully!", data);
 //       alert(response.data.message || response.data.error);
+//       navigate("/home");
 //     } catch (error) {
 //       console.error("Error:", error);
 //       alert("An error occurred while submitting the form.");
@@ -605,6 +441,39 @@ export default Job;
 //   };
 
 //   const password = watch("password");
+
+//   const validateStep = async (step) => {
+//     let fields = [];
+//     switch (step) {
+//       case 1:
+//         fields = ["name", "email", "mobile", "date"];
+//         break;
+//       case 2:
+//         fields = ["age", "gender", "adhaar", "pan"];
+//         break;
+//       case 3:
+//         fields = ["account", "dob", "address", "city", "nominee"];
+//         break;
+//       case 4:
+//         fields = ["password", "confirmPassword"];
+//         break;
+//       default:
+//         break;
+//     }
+//     const result = await trigger(fields);
+//     return result;
+//   };
+
+//   const handleNext = async () => {
+//     const isValid = await validateStep(step);
+//     if (isValid) {
+//       setStep(step + 1);
+//     }
+//   };
+
+//   const handlePrevious = () => {
+//     setStep(step - 1);
+//   };
 
 //   return (
 //     <div className="w-full max-w-lg mx-auto px-4 py-8 rounded-lg shadow-lg bg-white">
@@ -669,17 +538,17 @@ export default Job;
 //               <label className="block text-sm font-medium text-gray-700">Date:</label>
 //               <input
 //                 type="date"
-//                 {...register("date", { required: "Date is required" })}
+//                 {...register("Date", { required: "Date is required" })}
 //                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
 //               />
-//               {errors.date && <span className="text-red-500 text-sm">{errors.date.message}</span>}
+//               {errors.Date && <span className="text-red-500 text-sm">{errors.Date.message}</span>}
 //             </div>
 
 //             {/* Next Button */}
 //             <div className="flex justify-between">
 //               <button
 //                 type="button"
-//                 onClick={() => setStep(step + 1)}
+//                 onClick={handleNext}
 //                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               >
 //                 Next
@@ -724,7 +593,7 @@ export default Job;
 //             <div>
 //               <label className="block text-sm font-medium text-gray-700">Adhaar:</label>
 //               <input
-//                 {...register("adhaar", {
+//                 {...register("Adhaar", {
 //                   required: "Adhaar number is required",
 //                   pattern: {
 //                     value: /^[0-9]{12}$/,
@@ -734,7 +603,7 @@ export default Job;
 //                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
 //                 placeholder="Enter your Adhaar number"
 //               />
-//               {errors.adhaar && <span className="text-red-500 text-sm">{errors.adhaar.message}</span>}
+//               {errors.Adhaar && <span className="text-red-500 text-sm">{errors.Adhaar.message}</span>}
 //             </div>
 
 //             {/* PAN */}
@@ -758,14 +627,14 @@ export default Job;
 //             <div className="flex justify-between">
 //               <button
 //                 type="button"
-//                 onClick={() => setStep(step - 1)}
+//                 onClick={handlePrevious}
 //                 className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
 //               >
 //                 Previous
 //               </button>
 //               <button
 //                 type="button"
-//                 onClick={() => setStep(step + 1)}
+//                 onClick={handleNext}
 //                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               >
 //                 Next
@@ -798,10 +667,10 @@ export default Job;
 //               <label className="block text-sm font-medium text-gray-700">DOB:</label>
 //               <input
 //                 type="date"
-//                 {...register("dob", { required: "Date of Birth is required" })}
+//                 {...register("Date", { required: "Date of Birth is required" })}
 //                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
 //               />
-//               {errors.dob && <span className="text-red-500 text-sm">{errors.dob.message}</span>}
+//               {errors.Date && <span className="text-red-500 text-sm">{errors.Date.message}</span>}
 //             </div>
 
 //             {/* Address */}
@@ -842,7 +711,7 @@ export default Job;
 //             <div>
 //               <label className="block text-sm font-medium text-gray-700">Nominee:</label>
 //               <input
-//                 {...register("nominee", {
+//                 {...register("Nominee", {
 //                   required: "Nominee is required",
 //                   pattern: {
 //                     value: /^[A-Za-z\s]+$/,
@@ -852,21 +721,21 @@ export default Job;
 //                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
 //                 placeholder="Enter nominee name"
 //               />
-//               {errors.nominee && <span className="text-red-500 text-sm">{errors.nominee.message}</span>}
+//               {errors.Nominee && <span className="text-red-500 text-sm">{errors.Nominee.message}</span>}
 //             </div>
 
 //             {/* Previous and Next Buttons */}
 //             <div className="flex justify-between">
 //               <button
 //                 type="button"
-//                 onClick={() => setStep(step - 1)}
+//                 onClick={handlePrevious}
 //                 className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
 //               >
 //                 Previous
 //               </button>
 //               <button
 //                 type="button"
-//                 onClick={() => setStep(step + 1)}
+//                 onClick={handleNext}
 //                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               >
 //                 Next
@@ -877,7 +746,7 @@ export default Job;
 
 //         {step === 4 && (
 //           <div className="space-y-4">
-//             {/* Password */}
+//             Password
 //             <div>
 //               <label className="block text-sm font-medium text-gray-700">Password:</label>
 //               <input
@@ -940,7 +809,7 @@ export default Job;
 //             <div className="flex justify-between">
 //               <button
 //                 type="button"
-//                 onClick={() => setStep(step - 1)}
+//                 onClick={handlePrevious}
 //                 className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
 //               >
 //                 Previous
@@ -948,6 +817,7 @@ export default Job;
 //               <button
 //                 type="submit"
 //                 disabled={loading}
+//                 onSubmit={'Navigate'}
 //                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               >
 //                 {loading ? "Submitting..." : "Submit"}
@@ -961,3 +831,4 @@ export default Job;
 // };
 
 // export default Job;
+

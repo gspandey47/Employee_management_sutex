@@ -75,8 +75,8 @@ const Reject_shift = () => {
               {/* <th className="p-3">REASON</th> */}
               <th className="p-3">STATUS</th>
               <th className="p-3">MESSAGE</th>
-              <th className="p-3">ACTIONS</th>
               <th className="p-3">REJECT DATE</th>
+              <th className="p-3">ACTIONS</th>
               {/* <th className="p-3">ADDITIONAL NOTES</th> */}
             </tr>
           </thead>
@@ -87,8 +87,8 @@ const Reject_shift = () => {
                   <td className="p-3 text-center">{req.employee_id}</td>
                   <td className="p-3 text-center">{req.status}</td>
                   <td className="p-3 text-center">{req.message}</td>
-                  {/* <td className="p-3 text-center">{req.reject_date}</td>
-                  <td className="p-3 text-center">{req.additional_notes}</td>
+                  <td className="p-3 text-center">{req.reject_date}</td>
+                 {/* <td className="p-3 text-center">{req.additional_notes}</td>
                   <td className="p-3 text-center">{req.request_date}</td>
                   <td className="p-3 text-center">{req.status}</td> */}
                   

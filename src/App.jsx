@@ -254,6 +254,7 @@ import DesplayEmployeeNotice from "./Components/Page/DesplayEmployeeNotice";
 import Notices from "./Components/Page/FetchallNotice_employee";
 import DisplayAttendences from "./Components/Page/DesplayAttendences";
 import DisplayEmployeeAttendance from "./Components/Page/Employee_attendence";
+import ForgotPassword from "./Components/Page/ForgotPassword";
 
 function App() {
   return (
@@ -262,6 +263,7 @@ function App() {
         {/* ✅ If Not Logged In, Show Register/Login */}
         <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot" element={<ForgotPassword/>} />
 
 
 

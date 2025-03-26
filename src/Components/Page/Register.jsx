@@ -39,6 +39,11 @@ const Register = () => {
   }
 
   return (
+    <div  className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-bold text-center text-purple-700 mb-8">
+            EMPLOYEE MANAGEMENT SYSTEM
+          </h1>
+
     <motion.div 
       initial={{ opacity: 0, y: -20 }} 
       animate={{ opacity: 1, y: 0 }} 
@@ -69,7 +74,7 @@ const Register = () => {
             type="email"
             {...register('email', { required: 'Email is required' })}
             className="w-full mt-1 p-2 border rounded-md"
-          />
+            />
           {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
         </div>
 
@@ -103,6 +108,7 @@ const Register = () => {
         Already registered? <span className="text-purple-600 cursor-pointer hover:underline" onClick={() => navigate('/login')}>Login here</span>
       </motion.p>
     </motion.div>
+        </div>
   );
 };
 

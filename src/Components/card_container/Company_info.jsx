@@ -10,7 +10,7 @@ const Company_info = () => { return (
         {/* Logo Section */}
         <div className="flex-shrink-0 lg:w-32 lg:h-32 h-24 w-24 bg-white rounded-full flex items-center justify-center mr-3 shadow-md">
           <img
-            src="./src/assets/pet.jpeg"
+            src="./src/assets/theLion2.avif"
             alt="Company Logo"
             className="lg:w-28  w-20 h-20 lg:h-28 rounded-full object-cover"
           />
@@ -19,7 +19,7 @@ const Company_info = () => { return (
         {/* Info Section */}
         
           <div className="text-base lg:text-lg">
-          <h5 className="text-lg lg:text-5xl font-extrabold mb-4">Airtel Broadband Service</h5>
+          <h5 className="text-lg lg:text-5xl font-extrabold mb-4">The Royal Broadband Service</h5>
           <p className="text-lg lg:text-2xl ">Networking Infrastrucre.</p>
             <p><span className="font-semibold">Founded:</span> 2010</p>
             <p><span className="font-semibold">Headquarters:</span>Surat,Amroli</p>

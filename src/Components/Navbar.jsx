@@ -115,7 +115,7 @@ function Navbar() {
                 </NavLink>
               </li>
 
-              <li className="text-sm">
+              {/* <li className="text-sm">
                 <NavLink
                   to="/dashboard"
                   className={({ isActive }) => (isActive ? "Active" : "")}
@@ -125,7 +125,7 @@ function Navbar() {
                      <p >Dashboard</p>
                    </div>
                 </NavLink>
-              </li>
+              </li> */}
 
               <li className="text-sm">
                 <NavLink
@@ -165,7 +165,7 @@ function Navbar() {
                 </NavLink>
               </li>  */}
               
-              <li className="text-sm">
+              {/* <li className="text-sm">
                 <NavLink
                   to="/notice"
                   className={({ isActive }) => (isActive ? "Active" : "")}
@@ -175,7 +175,7 @@ function Navbar() {
                      <span>Notice</span>
                    </div>
                 </NavLink>
-              </li>
+              </li> */}
 
                {/* <li className='text-sm'><NavLink to='/desplay' className={({isActive})=>isActive?"Active":""}>Registered</NavLink></li>  */}
             </ul>

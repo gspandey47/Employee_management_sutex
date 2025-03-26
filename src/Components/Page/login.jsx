@@ -76,7 +76,14 @@ const Login = () => {
             Login
           </button>
         </form>
+            <motion.p 
+              className="text-center text-sm text-gray-600 mt-4"
+              whileHover={{ scale: 1.1 }}
+            >
+              forgot Username/password <span className="text-purple-600 cursor-pointer hover:underline" onClick={() => navigate('/forgot')}>Forgot</span>
+            </motion.p>
       </div>
+      
     </motion.div>
   );
 };

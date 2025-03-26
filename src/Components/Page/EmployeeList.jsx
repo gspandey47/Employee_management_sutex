@@ -127,7 +127,7 @@ const EmployeeList = () => {
 
   return (
     <div className="container ml-30 p-6 bg-gray-100">
-      <h2 className="text-3xl font-bold text-center text-blue-600 mb-4">Employee List</h2>
+      <h2 className="text-3xl font-bold text-center text-blue-600 mb-4">Job Request Employee List</h2>
       <div className="flex justify-end flex-col mb-4">
         <button onClick={handleDownloadPDF} className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
           Download PDF
